@@ -83,7 +83,7 @@ revisionId: ${file.revisionId}
         const listDetails = file.lists?.[bullet.listId];
         const glyphFormat =
           listDetails?.listProperties?.nestingLevels?.[0].glyphFormat || "";
-        const padding = "  ".repeat(bullet.nestingLevel || 0);
+        const padding = "    ".repeat(bullet.nestingLevel || 0);
         if (["[%0]", "%0."].includes(glyphFormat)) {
           text += `${padding}1. `;
         } else {
