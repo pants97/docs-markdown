@@ -148,22 +148,36 @@ const styleElement = (
     element.textRun?.textStyle?.bold &&
     element.textRun?.textStyle?.italic
   ) {
-    return `**_${content(element)}_**`;
+    return wrap(element, "**_");
   } else if (element.textRun?.textStyle?.italic) {
-    return `_${content(element)}_`;
+    return wrap(element, "_");
   } else if (element.textRun?.textStyle?.bold) {
-    return `**${content(element)}**`;
+    return wrap(element, "**");
   }
 
   return content(element);
 };
 
+const wrap = (
+    element: docs_v1.Schema$ParagraphElement,
+    wrapper: string,
+): string | undefined => {
+  const textRun = element?.textRun;
+  let text = textRun?.content;
+  if (textRun?.textStyle?.link?.url)
+    text = `[${text}](${textRun.textStyle.link.url})`;
+  if (text) {
+    const [, lead, body, trail] = text.match(/^(\s*)(\S+)(\s*)$/) ?? [];
+    text = !body ? text : `${lead}${wrapper}${body}${wrapper.split("").reverse().join("")}${trail}`;
+  }
+  return text || undefined;
+}
 const content = (
   element: docs_v1.Schema$ParagraphElement
 ): string | undefined => {
   const textRun = element?.textRun;
   const text = textRun?.content;
   if (textRun?.textStyle?.link?.url)
-    return `[${text}]${textRun.textStyle.link.url}`;
+    return `[${text}](${textRun.textStyle.link.url})`;
   return text || undefined;
 };
