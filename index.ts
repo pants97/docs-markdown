@@ -151,6 +151,8 @@ const styleElement = (
     return wrap(element, "**_");
   } else if (element.textRun?.textStyle?.italic) {
     return wrap(element, "_");
+  } else if (element.textRun?.textStyle?.strikethrough) {
+    return wrap(element, "~~");
   } else if (element.textRun?.textStyle?.bold) {
     return wrap(element, "**");
   }
