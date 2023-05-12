@@ -105,3 +105,5 @@ dist
 
 # Built files
 dist/
+*.iml
+/.idea
