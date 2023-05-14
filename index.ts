@@ -168,9 +168,10 @@ const wrap = (
   let text = textRun?.content;
   if (textRun?.textStyle?.link?.url)
     text = `[${text}](${textRun.textStyle.link.url})`;
-  if (text) {
-    const [, lead, body, trail] = text.match(/^(\s*)(\S+)(\s*)$/) ?? [];
-    text = !body ? text : `${lead}${wrapper}${body}${wrapper.split("").reverse().join("")}${trail}`;
+  else if (text) {
+    const [head] = text.match(/^\s*/) ?? [];
+    const [tail] = text.match(/\s*$/) ?? [];
+    text = `${text.slice(0, head.length)}${wrapper}${text.slice(head.length, text.length - tail.length)}${wrapper.split("").reverse().join("")}${text.slice(text.length - tail.length)}`;
   }
   return text || undefined;
 }
